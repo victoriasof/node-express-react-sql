@@ -24,6 +24,23 @@ class App extends Component {
     fetch('http://localhost:3000/api/users/1')
     .then((res) => res.json())
     .then(data => console.log(data));
+
+    fetch(
+      'http://localhost:3000/api/projects',
+      {
+        headers: {
+          'x-access-token': localStorage.getItem('token')
+        }
+      })
+    .then((res) => res.json())
+    .then(data => {
+      console.log('projects fetch');
+      console.log(data)
+    });
+  }
+
+  handleLogout () {
+    localStorage.removeItem('token');
   }
 
   render() {
@@ -36,6 +53,9 @@ class App extends Component {
 
         <Login />
         <Register />
+
+          <br/>
+        <button onClick={this.handleLogout}>Logout</button>
       </div>
     );
   }

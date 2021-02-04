@@ -11,9 +11,52 @@ export default class Register extends Component {
         };
     }
 
-    handleRegister = () => {
+    handleRegister = (e) => {
+        // function getCookie(cname) {
+        //   var name = cname + "=";
+        //   var decodedCookie = decodeURIComponent(document.cookie);
+        //   var ca = decodedCookie.split(';');
+        //   for(var i = 0; i <ca.length; i++) {
+        //     var c = ca[i];
+        //     while (c.charAt(0) == ' ') {
+        //       c = c.substring(1);
+        //     }
+        //     if (c.indexOf(name) == 0) {
+        //       return c.substring(name.length, c.length);
+        //     }
+        //   }
+        //   return "";
+        // }
+
         // TODO use fetch on /api/register, get token and save it to localStorage
         // localStorage.getItem('token');
+        e.preventDefault();
+        const options = {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password
+          })
+        };
+        fetch("http://localhost:3000/api/register", options)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          const token = data.token;
+          if (token) {
+            localStorage.setItem('token', token);
+            // localStorage.getItem('token');
+            // localStorage.removeItem('token');
+
+            // document.cookie = 'token="' + token + '"';
+            // document.cookie = `token="${token}"`;
+            // getCookie('token');
+          }
+        });
     }
 
     handleChange = (name, value) => {
